@@ -103,7 +103,7 @@
     position: relative;
   }
   .main_i {
-    box-sizing: border-box;
+
     width: 100%;
     overflow: hidden;
     top: 0;
@@ -169,7 +169,8 @@
   }
 
   .btn {
-    padding: 0px 40px;
+    box-sizing: border-box;
+    padding: 0px 60px;
     width: 100%;
     position: absolute;
     top: 50%;
