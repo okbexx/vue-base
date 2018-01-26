@@ -170,7 +170,7 @@
 
   .btn {
     box-sizing: border-box;
-    padding: 0px 60px;
+    padding: 0px 100px;
     width: 100%;
     position: absolute;
     top: 50%;
