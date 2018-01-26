@@ -8,7 +8,6 @@
           <h3>{{item.h2}}</h3>
         </div>
         <img :src="item.src"/>
-        <img :src="mainData[nowIndex].src">
       </div>
       <div class="b_main">
         <img :src="bI"/>
