@@ -2,15 +2,17 @@
   <div class="wrap">
     <div class="left_main">
       <div class="left_main_top">
-        <input type="checkbox" value="isAll" name="isall"/>
+        <input type="checkbox" value="isAll" name="isleftall" @click="toggleLeft('left')"/>
         <label>列表1</label>
       </div>
       <div class="content">
         <ul>
-          <li class="content_li" v-for="item in sortLeftData">
-            <input class="content_li_checkbox" type="checkbox" name="left" :value="item.label" :ikey="item.key"/>
-            <label>{{item.label}}</label>
-          </li>
+          <transition-group name="slide" >
+            <li class="content_li" v-for="item in sortLeftData" v-bind:key="item">
+              <input class="content_li_checkbox" type="checkbox" name="left" :value="item.label" :ikey="item.key"/>
+              <label>{{item.label}}</label>
+            </li>
+          </transition-group>
         </ul>
       </div>
     </div>
@@ -20,7 +22,7 @@
     </div>
     <div class="right_main">
       <div class="right_main_top">
-        <input type="checkbox" value="isAll" name="isall"/>
+        <input type="checkbox" value="isAll" name="isrightall" @click="toggleLeft('right')"/>
         <label>列表2</label>
       </div>
 
@@ -40,28 +42,30 @@
 <script>
   export default {
     name: "transfer",
-    computed:{
-      sortLeftData(){
-        return this.leftData.sort((a,b)=>{
-          return a.key-b.key
+    computed: {
+      sortLeftData() {
+        return this.leftData.sort((a, b) => {
+          return a.key - b.key
         })
       },
-      sortRightData(){
-        return this.rightData.sort((a,b) =>{
-          return a.key-b.key
+      sortRightData() {
+        return this.rightData.sort((a, b) => {
+          return a.key - b.key
         })
       }
     },
     data() {
       return {
+        isLeftAll: false,
+        isRightAll: false,
         leftSelectedData: [],
         leftData: [],
-        rightSelectedData:[],
+        rightSelectedData: [],
         rightData: []
       }
     },
-    mounted(){
-      this.leftData=this.d;
+    mounted() {
+      this.leftData = this.d;
     },
     props: {
       d: {
@@ -81,53 +85,100 @@
         ]
       }
     },
+
     methods: {
+      /*addLeftData(e){
+        let key= e.target.getAttribute('ikey')
+        let dui= this.getDui(key,this.leftData)
+        if(e.target.checked){
+          this.leftSelectedData.push(dui.member)
+        } else {
+          this.leftSelectedData.splice(dui.index,1)
+        }
+      },*/
       addDataToRight() {
         let leftCheckbox = document.getElementsByName('left');
-        debugger
+
         for (let i = 0; i < leftCheckbox.length; i++) {
           if (leftCheckbox[i].checked) {
             console.log(i)
             let key = parseInt(leftCheckbox[i].getAttribute('ikey'))
-            let dui= this.getDui(key,this.leftData)
+            let dui = this.getDui(key, this.leftData)
             this.leftSelectedData.push(dui.member)
-            this.leftData.splice(dui.index,1)
+            this.leftData.splice(dui.index, 1)
           }
 
         }
         this.setAllUnchecked("left")
-        this.rightData=this.rightData.concat(this.leftSelectedData)
-        this.leftSelectedData=[]
-
+        this.rightData = this.rightData.concat(this.leftSelectedData)
+        this.leftSelectedData = []
+        if (document.getElementsByName('isleftall')[0].checked) {
+          document.getElementsByName('isleftall')[0].checked = false
+        }
+        this.isLeftAll=false
       },
-      addDataToLeft(){
+      addDataToLeft() {
         let rightCheckbox = document.getElementsByName('right');
-        for (let i=0; i<rightCheckbox.length;i++) {
+        for (let i = 0; i < rightCheckbox.length; i++) {
           if (rightCheckbox[i].checked) {
 
             let key = parseInt(rightCheckbox[i].getAttribute('ikey'))
-            let dui= this.getDui(key,this.rightData)
+            let dui = this.getDui(key, this.rightData)
             this.rightSelectedData.push(dui.member)
-            this.rightData.splice(dui.index,1)
+            this.rightData.splice(dui.index, 1)
           }
         }
         this.setAllUnchecked("right")
-        this.leftData=this.leftData.concat(this.rightSelectedData)
-        this.rightSelectedData=[]
+        this.leftData = this.leftData.concat(this.rightSelectedData)
+        this.rightSelectedData = []
+        if (document.getElementsByName('isrightall')[0].checked) {
+          document.getElementsByName('isrightall')[0].checked = false
+        }
       },
-      getDui(key,data){
+      getDui(key, data) {
         for (let item in data) {
-          if (data[item].key===key) {
-            return {member:data[item],index: item}
+          if (data[item].key === key) {
+            return {member: data[item], index: item}
           }
         }
       },
-      setAllUnchecked(where){
+      setAllUnchecked(where) {
         let leftCheckbox = document.getElementsByName(where);
         for (let item of leftCheckbox) {
-          item.checked=false
+          item.checked = false
         }
+      },
+      toggleLeft(where) {
+        debugger
+        if (where==="left") {
+          this.isLeftAll=!(this.isLeftAll)
+        }
+        if (where==="right") {
+          this.isRightAll=!(this.isRightAll)
+        }
+        let checkbox = document.getElementsByName(where);
+        if (this.isLeftAll && where === 'left') {
+          for (let i = 0; i < checkbox.length; i++) {
+            checkbox[i].checked = true
+          }
+        } else if (!this.isLeftAll && where === 'left') {
+          for (let i = 0; i < checkbox.length; i++) {
+            checkbox[i].checked = false
+          }
+        }
+        if (this.isRightAll && where === 'right') {
+          for (let i = 0; i < checkbox.length; i++) {
+            checkbox[i].checked = true
+          }
+        } else if (!this.isRightAll && where === 'right') {
+          for (let i = 0; i < checkbox.length; i++) {
+            checkbox[i].checked = false
+          }
+        }
+
+
       }
+
     },
     /*watch:{
       leftData(){
@@ -165,6 +216,14 @@
     list-style: none;
   }
 
+  .slide-enter, .slide-leave-to {
+    transform: translateX(50%);
+  }
+
+  .slide-enter-active, .slide-leave-active {
+    transition: transform 1s;
+  }
+
   .wrap {
     height: 400px;
     margin: 0 auto;
@@ -173,11 +232,14 @@
     align-items: center;
   }
 
-  .wrap .left_main {
-    margin-right: 50px;
+  .wrap .left_main,.wrap .right_main{
+
     width: 200px;
-    height: 100%;
+
     background-color: blanchedalmond;
+  }
+  .wrap .left_main{
+    margin-right: 50px;
   }
 
   .wrap .left_main .left_main_top, .wrap .right_main .right_main_top {
@@ -200,11 +262,7 @@
     height: 50px;
   }
 
-  .wrap .right_main {
-    width: 200px;
-    height: 100%;
-    background-color: bisque;
-  }
+
 
   .content_li_checkbox {
     margin-right: 10px;
@@ -212,6 +270,6 @@
 
   .content_li {
 
-    margin: 10px;
+    padding: 5px 20px;
   }
 </style>
