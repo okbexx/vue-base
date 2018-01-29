@@ -6,10 +6,11 @@
         <label>列表1</label>
         <label style="float: right">{{leftCheckedData.length+'/'+importData.length}}</label>
       </div>
-      <div class="content">
+      <search-box @query="searchQuery"></search-box>
+      <div class="content" >
         <ul>
           <transition-group name="slide">
-            <li class="content_li" v-for="(item,index) in sortLeftData" v-bind:key="item">
+            <li class="content_li" v-for="(item,index) in sortLeftData" v-bind:key="index">
               <input class="content_li_checkbox" type="checkbox" :value="item.label" v-model="leftCheckedData"/>
               <label>{{item.label}}</label>
             </li>
@@ -31,7 +32,7 @@
       <div class="content">
         <ul>
           <transition-group name="slide">
-          <li class="content_li" v-for="(item,index) in sortRightData" v-bind:key="item">
+          <li class="content_li" v-for="(item,index) in sortRightData" v-bind:key="index">
             <input class="content_li_checkbox" type="checkbox" :value="item.label" v-model="rightCheckedData"/>
             <label>{{item.label}}</label>
           </li>
@@ -44,29 +45,43 @@
 
 <script>
   import _ from 'lodash'
+  import SearchBox from 'components/example/search-box/search-box'
 
   export default {
     name: "transfer2",
+    created(){
+      this.originData=this.importData
+    },
     data() {
       return {
+        originData:[],
         leftCheckedData: [],
         rightData: [],
         rightCheckedData: [],
         isAllLeftChecked: false,
-        isAllRightChecked: false
+        isAllRightChecked: false,
+        searchData:'',
+        query:''
       }
     },
     watch: {
       leftCheckedData(n) {
-        /*  if (n.length>0) {
-            this.isAllLeftChecked=true
-          }else {
-            this.isAllLeftChecked=false
-          }*/
         n.length > 0 ? this.isAllLeftChecked = true : this.isAllLeftChecked = false
       },
       rightCheckedData(n) {
         n.length > 0 ? this.isAllRightChecked = true : this.isAllRightChecked = false
+      },
+      query(newQuery){
+        debugger
+        let shuzu=[]
+        let result=[]
+        shuzu=_.map(this.originData,'label')
+        for (let item of shuzu) {
+         if(item.indexOf(newQuery)!=-1) {
+            result.push({label:item})
+         }
+        }
+        this.importData=result
       }
     },
     computed: {
@@ -113,6 +128,15 @@
           {
             label: 'yyy',
           }]
+      },
+      filterAble:{
+        type: Boolean,
+        default: true
+      },
+      filterMethod:{
+        type:Function,
+        default: function () {
+        }
       }
     },
     methods: {
@@ -121,12 +145,15 @@
           this.rightData.push({label: item})
           let index = this.getDuiIndex(item, this.importData)
           this.importData.splice(index, 1)
+          this.originData.splice(index, 1)
+
         }
         this.leftCheckedData = []
       },
       addDataToLeft() {
         for (let item of this.rightCheckedData) {
           this.importData.push({label: item})
+          this.originData.push({label: item})
           let index = this.getDuiIndex(item, this.rightData)
           console.log(index)
           this.rightData.splice(index, 1)
@@ -134,11 +161,6 @@
         this.rightCheckedData = []
       },
       getDuiIndex(label, data) {
-        /*for (let item in data) {
-          if (data[item].label === label) {
-            return rightCheckedData
-          }
-        }*/
         for (let i = 0; i < data.length; i++) {
           if (data[i].label === label) {
             return i
@@ -158,7 +180,14 @@
         } else {
           this.rightCheckedData = []
         }
+      },
+      searchQuery(query){
+        debugger
+        this.query=query
       }
+    },
+    components:{
+      SearchBox
     }
   }
 </script>
