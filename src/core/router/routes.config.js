@@ -6,5 +6,9 @@ export default [
   {
     path: '/',
     component: Transfer2
+  },
+  {
+    path:'/transfer',
+    component: Transfer
   }
 ]

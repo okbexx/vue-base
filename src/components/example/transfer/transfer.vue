@@ -8,7 +8,7 @@
       <div class="content">
         <ul>
           <transition-group name="slide" >
-            <li class="content_li" v-for="item in sortLeftData" v-bind:key="item">
+            <li class="content_li" v-for="(item,index) in sortLeftData" v-bind:key="index">
               <input class="content_li_checkbox" type="checkbox" name="left" :value="item.label" :ikey="item.key"/>
               <label>{{item.label}}</label>
             </li>

@@ -2,7 +2,7 @@
   <div class="search-box">
     <i class="icon-search"></i>
     <input ref="query" v-model="query" class="box" :placeholder="placeholder"/>
-    <i @click="clear" v-show="query" class="icon-dismiss"></i>
+    <i @click="clear" v-show="query"></i>
   </div>
 </template>
 
@@ -10,6 +10,7 @@
   import {debounce} from 'common/util/util.js'
 
   export default {
+    name:'search-box',
     props: {
       placeholder: {
         type: String,
@@ -35,8 +36,6 @@
 </script>
 
 <style scoped >
-
-
   .search-box {
     display: flex;
     align-items: center;

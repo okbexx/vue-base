@@ -6,10 +6,12 @@ import router from './core/router'
 import store from './core/store'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import example from 'components/example'
 
 Vue.config.productionTip = false
 Vue.use(router)
 Vue.use(ElementUI)
+Vue.use(example)
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

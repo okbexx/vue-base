@@ -1,6 +1,6 @@
 <template>
   <label>
-    <input type="checkbox" v-model=""/>
+    <input type="checkbox"/>
   </label>
 </template>
 

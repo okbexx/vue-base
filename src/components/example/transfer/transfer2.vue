@@ -1,7 +1,7 @@
 <template>
   <div class="wrap">
     <div class="left_main">
-      <div class="left_main_top">
+      <div class="main_top">
         <input type="checkbox" value="isAll" name="isleftall" @click="isAllLeft()" v-model="isAllLeftChecked"/>
         <label>列表1</label>
         <label style="float: right">{{leftCheckedData.length+'/'+importData.length}}</label>
@@ -23,7 +23,7 @@
       <button class="btn_main" @click="addDataToLeft()"><</button>
     </div>
     <div class="right_main">
-      <div class="right_main_top">
+      <div class="main_top">
         <input type="checkbox" value="isAll" name="isrightall" @click="isAllRight()" v-model="isAllRightChecked"/>
         <label>列表2</label>
         <label style="float: right">{{rightCheckedData.length+'/'+rightData.length}}</label>
@@ -45,7 +45,7 @@
 
 <script>
   import _ from 'lodash'
-  import SearchBox from 'components/example/search-box/search-box'
+ // import SearchBox from 'components/example/search-box/search-box'
 
   export default {
     name: "transfer2",
@@ -185,14 +185,11 @@
         debugger
         this.query=query
       }
-    },
-    components:{
-      SearchBox
     }
   }
 </script>
 
-<style scoped>
+<style scoped lang="scss" rel="stylesheet/scss">
   html, body, div, span, applet, object, iframe,
   h1, h2, h3, h4, h5, h6, p, blockquote, pre,
   a, abbr, acronym, address, big, cite, code,
@@ -213,7 +210,6 @@
     font: inherit;
     vertical-align: baseline;
   }
-
   ul {
     list-style: none;
   }
@@ -234,45 +230,40 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    .left_main,.right_main{
+      width: 200px;
+      background-color: blanchedalmond;
+      .main_top{
+        background-color: antiquewhite;
+        padding: 0 20px;
+        height: 44px;
+        line-height: 44px;
+      }
+    }
+    .left_main{
+      margin-right: 50px;
+    }
+    .btn{
+      width: 100px;
+      margin-right: 50px;
+      background-color: aqua;
+      height: 100px;
+      .btn_main{
+        display: block;
+        width: 100%;
+        height: 50px;
+      }
+    }
   }
 
-  .wrap .left_main, .wrap .right_main {
-    width: 200px;
-
-    background-color: blanchedalmond;
-  }
-
-  .wrap .left_main {
-    margin-right: 50px;
-  }
   .content{
     overflow: auto;
     height: 200px;
-  }
-  .wrap .left_main .left_main_top, .wrap .right_main .right_main_top {
-    background-color: antiquewhite;
-    padding: 0 20px;
-    height: 44px;
-    line-height: 44px;
-  }
-
-  .wrap .btn {
-    width: 100px;
-    margin-right: 50px;
-    background-color: aqua;
-    height: 100px;
-  }
-
-  .wrap .btn .btn_main {
-    display: block;
-    width: 100%;
-    height: 50px;
   }
 
   .content_li_checkbox {
     margin-right: 10px;
   }
-
   .content_li {
     padding: 5px 20px;
   }
