@@ -50,7 +50,10 @@
   export default {
     name: "transfer2",
     created(){
-      this.originData=this.importData
+
+      for (let item of this.importData) {
+        this.originData.push({label:item})
+      }
     },
     data() {
       return {
@@ -72,7 +75,6 @@
         n.length > 0 ? this.isAllRightChecked = true : this.isAllRightChecked = false
       },
       query(newQuery){
-        debugger
         let shuzu=[]
         let result=[]
         shuzu=_.map(this.originData,'label')
@@ -141,6 +143,7 @@
     },
     methods: {
       addDataToRight() {
+        debugger
         for (let item of this.leftCheckedData) {
           this.rightData.push({label: item})
           let index = this.getDuiIndex(item, this.importData)
