@@ -1,5 +1,7 @@
 <template>
-
+  <label>
+    <input type="checkbox" v-model=""/>
+  </label>
 </template>
 
 <script>
