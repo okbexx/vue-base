@@ -17,7 +17,6 @@ export default {
   }
 
   body {
-    padding: 50px 0;
     background-color: #ffffff;
     font-size: 14px;
     color: #555;
